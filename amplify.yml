@@ -1,0 +1,27 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        # Amplify's build image does NOT include Flutter, so we download it.
+        # The version is pinned so every build uses the exact same SDK.
+        # To change versions, edit the number below (it must be a Flutter release tag).
+        - export FLUTTER_VERSION=3.35.0
+        - git clone --depth 1 --branch "$FLUTTER_VERSION" https://github.com/flutter/flutter.git "$HOME/flutter"
+        - export PATH="$HOME/flutter/bin:$PATH"
+        - flutter config --no-analytics
+        - flutter --version
+        - flutter precache --web
+        - flutter pub get
+    build:
+      commands:
+        # Each phase gets a fresh PATH, so we add Flutter again here.
+        - export PATH="$HOME/flutter/bin:$PATH"
+        # Fails the build on errors and warnings. Style hints ("info") do not fail it.
+        - flutter analyze --no-fatal-infos
+        - flutter build web --release
+  artifacts:
+    # Amplify publishes everything inside this folder as the website.
+    baseDirectory: build/web
+    files:
+      - '**/*'
