@@ -9,7 +9,7 @@ List<LearningTopic> sampleTopics() {
       name: 'AWS',
       description: 'Cloud basics: EC2, S3, IAM and Amplify Hosting.',
       icon: Icons.cloud_outlined,
-      color: Colors.orange,
+      color: Colors.yellow,
       progress: 0.55,
     ),
     LearningTopic(
